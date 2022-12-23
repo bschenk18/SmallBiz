@@ -12,14 +12,16 @@ class Employee: Codable, Equatable {
     var lastName: String
     var skillLevel: Int
     var id: String
+    var tasks: [Task]
     
     
-    init(firstName: String, lastName: String, skillLevel: Int = 0, id: String = UUID().uuidString){
+    init(firstName: String, lastName: String, skillLevel: Int = 0, id: String = UUID().uuidString, tasks: [Task] = []){
         
         self.firstName = firstName
         self.lastName = lastName
         self.skillLevel = skillLevel
         self.id = id
+        self.tasks = tasks
         
     }
     

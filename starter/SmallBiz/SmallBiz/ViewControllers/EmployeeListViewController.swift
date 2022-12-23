@@ -38,7 +38,13 @@ class EmployeeListViewController: UIViewController {
         // Split first and last name
         let fullName = text.components(separatedBy: " ")
         
+        if fullName.count >= 2 {
+            
         EmployeeController.shared.addEmployee(firstName: fullName[0], lastName: fullName[1])
+        }else{
+        EmployeeController.shared.addEmployee(firstName: fullName[0], lastName: "")
+        }
+        
         employeeTextField.text = ""
         employeeTextField.resignFirstResponder()
         tableView.reloadData()
@@ -78,5 +84,30 @@ extension EmployeeListViewController: UITableViewDelegate, UITableViewDataSource
             EmployeeController.shared.delete(employee: employeeToDelete)
             tableView.deleteRows(at: [indexPath], with: .fade)
         }
+    }
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    //Verify the segue is the correct one, by checking the segue ID
+        if segue.identifier == "toTaskView" {
+            //Identify where it is we want to segue to
+            guard let destinationViewController =
+                    segue.destination as? EmployeeTaskListViewController else {
+                print("There was an error with the destinationViewController")
+                return
+            }
+            //Identify what row was tapped on (the index)
+            guard let indexPath = tableView.indexPathForSelectedRow else {
+                print("There was an error with obtaining the index path")
+                return
+            }
+            
+            //Identiy what it is we want to pass along
+            let selectedEmployee = EmployeeController.shared.employees[indexPath.row]
+            
+            //Reception :D Make the pass
+            destinationViewController.employee = selectedEmployee
+        }
+        
+    
     }
 }
